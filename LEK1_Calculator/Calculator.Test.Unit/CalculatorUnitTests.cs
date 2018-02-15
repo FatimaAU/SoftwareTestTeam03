@@ -194,7 +194,15 @@ namespace Calculator.Test.Unit
         [Test]
         public void Divide_DivideBy0WithOverload_ThrowsException()
         {
-            Assert.Throws<DivideByZeroException>(() => _uut.Divide(1, 0));
+            _uut.Add(4, 2);
+            Assert.Throws<DivideByZeroException>(() => _uut.Divide(0));
         }
+
+        [Test]
+        public void Divide_DivideWithOverload_ThrowsNoException()
+        {
+            Assert.DoesNotThrow(() => _uut.Divide(2));
+        }
+
     }
 }
