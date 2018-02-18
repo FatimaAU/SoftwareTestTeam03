@@ -202,7 +202,6 @@ namespace Calculator.Test.Unit
         public void Divide_DivideWithOverload_ThrowsNoException()
         {
             Assert.DoesNotThrow(() => _uut.Divide(2));
-
         }
 
     }
