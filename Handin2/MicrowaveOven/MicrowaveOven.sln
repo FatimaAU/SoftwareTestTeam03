@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrowaveOven", "MicrowaveOven\MicrowaveOven.csproj", "{C821D9E2-8950-4C1C-8E7A-2BFA4900E3AE}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MicrowaveOven.Test.Intergration", "MicrowaveOven.Test.Intergration\MicrowaveOven.Test.Intergration.csproj", "{3F69EE3D-F320-41A6-8072-C2B2387C01FE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C821D9E2-8950-4C1C-8E7A-2BFA4900E3AE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C821D9E2-8950-4C1C-8E7A-2BFA4900E3AE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C821D9E2-8950-4C1C-8E7A-2BFA4900E3AE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C821D9E2-8950-4C1C-8E7A-2BFA4900E3AE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3F69EE3D-F320-41A6-8072-C2B2387C01FE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3F69EE3D-F320-41A6-8072-C2B2387C01FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3F69EE3D-F320-41A6-8072-C2B2387C01FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3F69EE3D-F320-41A6-8072-C2B2387C01FE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {3F8850D0-6249-4ACD-8577-EC9711D747EC}
+	EndGlobalSection
+EndGlobal
