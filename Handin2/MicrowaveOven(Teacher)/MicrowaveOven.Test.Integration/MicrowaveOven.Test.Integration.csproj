@@ -1,16 +1,19 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\NUnit.3.10.1\build\NUnit.props" Condition="Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" />
   <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{2B04DA6B-AFE9-4548-AA05-84D806BA0FA4}</ProjectGuid>
+    <ProjectGuid>{6841B43B-8528-40AF-82B1-3C79B6E63C60}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>MicrowaveOvenClasses</RootNamespace>
-    <AssemblyName>MicrowaveOvenClasses</AssemblyName>
+    <RootNamespace>MicrowaveOven.Test.Integration</RootNamespace>
+    <AssemblyName>MicrowaveOven.Test.Integration</AssemblyName>
     <TargetFrameworkVersion>v4.6.1</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -36,6 +39,9 @@
     <Reference Include="NSubstitute, Version=3.1.0.0, Culture=neutral, PublicKeyToken=92dd2e9066daa5ca, processorArchitecture=MSIL">
       <HintPath>..\packages\NSubstitute.3.1.0\lib\net46\NSubstitute.dll</HintPath>
     </Reference>
+    <Reference Include="nunit.framework, Version=3.10.1.0, Culture=neutral, PublicKeyToken=2638cd05610744eb, processorArchitecture=MSIL">
+      <HintPath>..\packages\NUnit.3.10.1\lib\net45\nunit.framework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core" />
@@ -50,28 +56,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Boundary\Button.cs" />
-    <Compile Include="Boundary\Display.cs" />
-    <Compile Include="Boundary\Door.cs" />
-    <Compile Include="Boundary\Light.cs" />
-    <Compile Include="Boundary\Output.cs" />
-    <Compile Include="Boundary\PowerTube.cs" />
-    <Compile Include="Boundary\Timer.cs" />
-    <Compile Include="Controllers\CookController.cs" />
-    <Compile Include="Controllers\UserInterface.cs" />
-    <Compile Include="Interfaces\IButton.cs" />
-    <Compile Include="Interfaces\ICookController.cs" />
-    <Compile Include="Interfaces\IDisplay.cs" />
-    <Compile Include="Interfaces\IDoor.cs" />
-    <Compile Include="Interfaces\ILight.cs" />
-    <Compile Include="Interfaces\IOutput.cs" />
-    <Compile Include="Interfaces\IPowerTube.cs" />
-    <Compile Include="Interfaces\ITimer.cs" />
-    <Compile Include="Interfaces\IUserInterface.cs" />
+    <Compile Include="IT1_Display.cs" />
+    <Compile Include="IT2_PowerTube.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\MicrowaveOvenClasses\MicrowaveOvenClasses.csproj">
+      <Project>{2b04da6b-afe9-4548-aa05-84d806ba0fa4}</Project>
+      <Name>MicrowaveOvenClasses</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\NUnit.3.10.1\build\NUnit.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\NUnit.3.10.1\build\NUnit.props'))" />
+  </Target>
 </Project>
