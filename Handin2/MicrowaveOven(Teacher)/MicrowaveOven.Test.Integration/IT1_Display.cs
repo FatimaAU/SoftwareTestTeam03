@@ -13,49 +13,36 @@ namespace MicrowaveOven.Test.Integration
     [TestFixture]
     public class IT1_Display
     {
-        private Display uut;
-        private IOutput output;
+        private Display _uut;
+        private IOutput _output;
 
         [SetUp]
         public void Setup()
         {
-            output = Substitute.For<IOutput>();
-            uut = new Display(output);
+            _output = Substitute.For<IOutput>();
+            _uut = new Display(_output);
         }
 
-        [Test]
-        public void ShowTime_ZeroMinuteZeroSeconds_CorrectOutput()
-        {
-            uut.ShowTime(0, 0);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("00:00")));
-        }
-
+       
         [Test]
         public void ShowTime_SomeMinuteSomeSecond_CorrectOutput()
         {
-            uut.ShowTime(10, 15);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("10:15")));
+            _uut.ShowTime(11, 15);
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("11:15")));
         }
 
         [Test]
         public void ShowPower_Zero_CorrectOutput()
         {
-            uut.ShowPower(0);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("0 W")));
-        }
-
-        [Test]
-        public void ShowPower_NotZero_CorrectOutput()
-        {
-            uut.ShowPower(150);
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("150 W")));
+            _uut.ShowPower(30);
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("30 W")));
         }
 
         [Test]
         public void Clear_CorrectOutput()
         {
-            uut.Clear();
-            output.Received().OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
+            _uut.Clear();
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("cleared")));
         }
     }
 }
