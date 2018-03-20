@@ -33,58 +33,33 @@ namespace MicrowaveOven.Test.Integration
         }
 
         [Test]
-        public void StartCook_StartTimer_Correct()
+        public void TickReceived_TimerTick_DisplayReceivedCorrect()
         {
+           //ManualResetEvent pause = new ManualResetEvent(false);
 
-            _uut.Start(5000);
+           //_uut.Start(5000);
 
-            //_uut.TimeRemaining.Returns(200);
-            //_uut.TimerTick += Raise.EventWith(this, EventArgs.Empty);
+           //pause.WaitOne(2000);
 
-            ManualResetEvent pause = new ManualResetEvent(false);
-            int notifications = 0;
+           // _display.Received().ShowTime(0, 3);
 
-            _uut.TimerTick += (sender, args) => notifications++;
-
-            pause.WaitOne(2000);
-
-            //_cookController.Received().OnTimerTick(_uut, EventArgs.Empty);
-            //_cookController.OnTimerTick(_uut, EventArgs.Empty);
-
-            _display.Received().ShowTime(3, 20);
-
-            //ManualResetEvent pause = new ManualResetEvent(false);
-            //int notifications = 0;
-
-            //uut.Expired += (sender, args) => pause.Set();
-            //uut.TimerTick += (sender, args) => notifications++;
-
-            //uut.Start(2000);
-
-            //// wait longer than expiration
-            //Assert.That(pause.WaitOne(2100));
-            //uut.Stop();
-
-            //Assert.That(notifications, Is.EqualTo(2));
-
+            // Check call received on CC ?
+            _cookController.Received().OnTimerTick(_uut, EventArgs.Empty);
         }
 
         [Test]
-        public void StopCook_StartTimer_Correct()
+        public void ExpiredReceived_TimerExpired_TurnOffPowerTube()
         {
+            // Has to call StartCooking before being able to turn isCooking = true
+            _cookController.StartCooking(50, 3000);
             ManualResetEvent pause = new ManualResetEvent(false);
 
-            _uut.Start(3000);
+            // Override StartCooking - test not dependant on CC
+            _uut.Start(1000);
 
-            //_uut.Expired += (sender, args) => pause.Set();
+            pause.WaitOne(1000);
 
-            //_uut.Stop();
-
-            _cookController.Received().OnTimerExpired(_uut, EventArgs.Empty);
-            //_uut.TimeRemaining.Returns(0);
-            //_uut.Expired += Raise.EventWith(this, EventArgs.Empty);
-
-            //_powerTube.Received().TurnOff();
+            _powerTube.Received().TurnOff();
         }
     }
 }

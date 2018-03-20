@@ -63,6 +63,7 @@ namespace MicrowaveOvenClasses.Controllers
 
         public void OnTimerTick(object sender, EventArgs e)
         {
+            // Error found: TimeRemaining has to be divided by 1000!
             int remaining = myTimer.TimeRemaining;
             myDisplay.ShowTime(remaining/60, remaining % 60);
         }
