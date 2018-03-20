@@ -17,7 +17,7 @@ namespace MicrowaveOven.Test.Integration
     class IT4_Timer
     {
         private ITimer _uut;
-        private CookController _cookController;
+        private ICookController _cookController;
         private IDisplay _display;
         private IPowerTube _powerTube;
         private event EventHandler TimerTick;
@@ -29,22 +29,24 @@ namespace MicrowaveOven.Test.Integration
             _powerTube = Substitute.For<IPowerTube>();
             _uut = new Timer();
 
-            _cookController = Substitute.For<CookController>(_uut, _display, _powerTube);
+            //_cookController = Substitute.For<ICookController>();
+            _cookController = new CookController(_uut, _display, _powerTube);
         }
 
         [Test]
         public void TickReceived_TimerTick_DisplayReceivedCorrect()
         {
-           //ManualResetEvent pause = new ManualResetEvent(false);
+           ManualResetEvent pause = new ManualResetEvent(false);
 
-           //_uut.Start(5000);
+            _uut.Start(5000);
 
-           //pause.WaitOne(2000);
+            pause.WaitOne(2000);
 
-           // _display.Received().ShowTime(0, 3);
+            _display.Received().ShowTime(0, 3);
 
             // Check call received on CC ?
-            _cookController.Received().OnTimerTick(_uut, EventArgs.Empty);
+            //_cookController.Received().OnTimerTick(_uut, EventArgs.Empty);
+            //_cookController.Received().StartCooking(50, 50);
         }
 
         [Test]
