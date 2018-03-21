@@ -62,6 +62,7 @@
     <Compile Include="IT4_Timer.cs" />
     <Compile Include="IT5_CookController.cs" />
     <Compile Include="IT6_UserInterface.cs" />
+    <Compile Include="IT7_8_Button_Door.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

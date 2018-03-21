@@ -65,14 +65,23 @@ namespace MicrowaveOven.Test.Integration
         }
 
         [Test]
-        public void OnTimePressed_SetTime_DisplayReceivedTimeCorrect()
+        public void OnTimePressed_ShowTime_RaisedEvent_DisplayReceivedTimeCorrect()
         {
             _uut.OnPowerPressed(_pButton, EventArgs.Empty);
             _uut.OnTimePressed(_tButton, EventArgs.Empty);
-
-            _tButton.Pressed += Raise.EventWith(_tButton, EventArgs.Empty);
-            _display.Received().ShowTime(1, 0);
+            _uut.OnTimePressed(_tButton, EventArgs.Empty);
+            _display.Received().ShowTime(2, 0);
         }
+
+        [Test]
+        public void OnStartCancelPressed_Clear_DisplayReceivedTimeCorrect()
+        {
+            _uut.OnPowerPressed(_pButton, EventArgs.Empty);
+            _uut.OnTimePressed(_tButton, EventArgs.Empty);
+            _uut.OnStartCancelPressed(_scButton, EventArgs.Empty);
+            _display.Received().Clear();
+        }
+
 
         [Test]
         public void OnStartCancelPressed_StartCooking_CookControllerReceived()
@@ -83,7 +92,14 @@ namespace MicrowaveOven.Test.Integration
             _cookController.Received().StartCooking(50,60);
         }
 
-
-
+        [Test]
+        public void OnDoorOpened_Stop_StopReceived()
+        {
+            _uut.OnPowerPressed(_pButton, EventArgs.Empty);
+            _uut.OnTimePressed(_tButton, EventArgs.Empty);
+            _uut.OnStartCancelPressed(_scButton, EventArgs.Empty);
+            _uut.OnStartCancelPressed(_scButton, EventArgs.Empty);
+            _cookController.Received().Stop();
+        }
     }
 }
