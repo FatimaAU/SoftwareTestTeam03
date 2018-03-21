@@ -35,26 +35,27 @@ namespace MicrowaveOven.Test.Integration
         [Test]
         public void OnTimerTick_ShowTime_DisplayCorrectOutput()
         {
-            _uut.StartCooking(50, 6000);
+            _uut.StartCooking(50, 60);
 
-            _timer.TimeRemaining.Returns(5000);
+            // This gives correct output, meaning StartCooking is giving off 60 instead of 60*1000
+            _timer.TimeRemaining.Returns(55*1000);
             _timer.TimerTick += Raise.EventWith(_timer, EventArgs.Empty);
 
-            _display.Received().ShowTime(0,5);
+            _display.Received().ShowTime(0,55);
           
         }
 
         [Test]
         public void StartCooking_TurnOnPowerTube_PowerTubeOn()
         {
-            _uut.StartCooking(50, 5000);
-            _powerTube.Received().TurnOn(50);
+            _uut.StartCooking(50, 60);
+            _powerTube.Received().TurnOn(50/7);
         }
 
         [Test]
         public void OnTimerExpired_TurnOffPowerTube_PowerTubeOff()
         {
-            _uut.StartCooking(50, 1000);
+            _uut.StartCooking(50, 10);
 
             _timer.TimeRemaining.Returns(0);
             _timer.Expired += Raise.EventWith(_timer, EventArgs.Empty);
@@ -65,15 +66,15 @@ namespace MicrowaveOven.Test.Integration
         [Test]
         public void CookingStart_TimerStarted_TimerReceivedStart()
         {
-            _uut.StartCooking(50, 2000);
-
-            _timer.Received().Start(2000);
+            _uut.StartCooking(50, 50);
+            // Should be 1000*50, but gives off 50
+            _timer.Received().Start(50*1000);
         }
 
         [Test]
         public void CookingStop_TimerStopped_TimerReceivedStop()
         {
-            _uut.StartCooking(50, 2000);
+            _uut.StartCooking(50, 50);
             _uut.Stop();
 
             _timer.Received().Stop();
@@ -82,7 +83,7 @@ namespace MicrowaveOven.Test.Integration
         [Test]
         public void OnTimerExpired_CookingIsDone_UIReceivedDone()
         {
-            _uut.StartCooking(50, 2000);
+            _uut.StartCooking(50, 30);
 
             _timer.Expired += Raise.EventWith(_timer, EventArgs.Empty);
 

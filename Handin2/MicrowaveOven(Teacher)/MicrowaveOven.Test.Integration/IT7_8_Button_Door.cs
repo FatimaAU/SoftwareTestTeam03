@@ -35,21 +35,23 @@ namespace MicrowaveOven.Test.Integration
             
         }
 
+        // Door
         [Test]
-        public void OpenDoor_LightReceivedTurnOn()
+        public void OpenDoor_DoorOpened_LightReceivedTurnOn()
         {
             _door.Open();
             _light.Received().TurnOn();
         }
 
         [Test]
-        public void CloseDoor_LightReceivedTurnOff()
+        public void CloseDoor_DoorClosed_LightReceivedTurnOff()
         {
             _door.Open();
             _door.Close();
             _light.Received().TurnOff();
         }
 
+        // PowerButton
         [Test]
         public void PressPowerButton_ShowPower_DisplayPowerCorrect()
         {
@@ -57,6 +59,7 @@ namespace MicrowaveOven.Test.Integration
             _display.Received().ShowPower(50);
         }
 
+        // TimeButton
         [Test]
         public void PressTimeButton_ShowTime_DisplayTimeCorrect()
         {
@@ -64,7 +67,16 @@ namespace MicrowaveOven.Test.Integration
             _tButton.Press();
             _display.Received().ShowTime(1,0);
         }
+        [Test]
+        public void PressTimeButtonTwice_ShowTime_DisplayTimeCorrect()
+        {
+            _pButton.Press();
+            _tButton.Press();
+            _tButton.Press();
+            _display.Received().ShowTime(2, 0);
+        }
 
+        // StartCancelButton
         [Test]
         public void PressStartCancelButton_LightReceivedTurnOn()
         {

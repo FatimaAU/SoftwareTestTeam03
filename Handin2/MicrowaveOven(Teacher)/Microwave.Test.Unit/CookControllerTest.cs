@@ -32,7 +32,8 @@ namespace Microwave.Test.Unit
         {
             uut.StartCooking(50, 60);
 
-            timer.Received().Start(60);
+            // Changed unit test
+            timer.Received().Start(60*1000);
         }
 
         [Test]
@@ -40,7 +41,8 @@ namespace Microwave.Test.Unit
         {
             uut.StartCooking(50, 60);
 
-            powerTube.Received().TurnOn(50);
+            // Changed to divide by 7
+            powerTube.Received().TurnOn(50/7);
         }
 
         [Test]
@@ -48,7 +50,7 @@ namespace Microwave.Test.Unit
         {
             uut.StartCooking(50, 60);
 
-            timer.TimeRemaining.Returns(115000);
+            timer.TimeRemaining.Returns(115*1000);
             timer.TimerTick += Raise.EventWith(this, EventArgs.Empty);
 
             display.Received().ShowTime(1, 55);

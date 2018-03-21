@@ -27,7 +27,7 @@ namespace MicrowaveOven.Test.Integration
         public void TurnOn_WasOff_CorrectOutput()
         {
             _uut.TurnOn();
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("on")));
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("on")));
         }
 
         [Test]
@@ -35,7 +35,7 @@ namespace MicrowaveOven.Test.Integration
         {
             _uut.TurnOn();
             _uut.TurnOff();
-            _output.Received(1).OutputLine(Arg.Is<string>(str => str.Contains("off")));
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
 
     }

@@ -27,19 +27,46 @@ namespace MicrowaveOvenClasses
             var cookController = new CookController(timer, display, powerTube);
             var light = new Light(output);
             var userInterface = new UserInterface(pButton, tButton, scButton, door, display, light, cookController);
+            cookController.UI = userInterface;
+
 
             // Simulate user activities
+            Console.WriteLine("Let's cook some food!\n");
             door.Open();
             door.Close();
             pButton.Press();
-            tButton.Press();
+            Thread.Sleep(2000);
+            pButton.Press();
+            Thread.Sleep(500);
+            pButton.Press();
+            Thread.Sleep(500);
+            pButton.Press();
+            Thread.Sleep(500);
+            pButton.Press();
+            Thread.Sleep(2000);
             tButton.Press();
             scButton.Press();
+            Thread.Sleep(5000);
+            Console.Write("Nah, wrong settings ..\n\n");
+            scButton.Press();
             Thread.Sleep(2000);
-
-            // Wait while the classes, including the timer, do their job
-            System.Console.WriteLine("Tast enter når applikationen skal afsluttes");
-            System.Console.ReadLine();
+            pButton.Press();
+            pButton.Press();
+            tButton.Press();
+            scButton.Press();
+            Thread.Sleep(5000);
+            Console.WriteLine("Nvm, not hungry\n");
+            door.Open();
+            Console.WriteLine("Or maybe I am\n");
+            Thread.Sleep(1000);
+            door.Close();
+            Thread.Sleep(3000);
+            pButton.Press();
+            tButton.Press();
+            scButton.Press();
+            Thread.Sleep(1000 * 61);
+            Console.WriteLine("FOOD!\n");
+            door.Open();
 
         }
     }

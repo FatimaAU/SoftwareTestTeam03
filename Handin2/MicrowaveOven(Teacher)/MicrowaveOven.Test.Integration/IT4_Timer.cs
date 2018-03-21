@@ -38,7 +38,7 @@ namespace MicrowaveOven.Test.Integration
 
             _uut.Start(5000);
 
-            pause.WaitOne(2000);
+            pause.WaitOne(2100);
 
             _display.Received().ShowTime(0, 3);
         }

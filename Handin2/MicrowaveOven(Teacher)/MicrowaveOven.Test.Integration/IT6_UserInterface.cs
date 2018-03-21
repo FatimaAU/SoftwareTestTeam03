@@ -34,6 +34,7 @@ namespace MicrowaveOven.Test.Integration
             _uut = new UserInterface(_pButton, _tButton, _scButton, _door, _display, _light, _cookController);
         }
 
+        // Light
         [Test]
         public void OnDoorOpened_TurnOnLight_LightReceivedTurnOn()
         {
@@ -49,6 +50,7 @@ namespace MicrowaveOven.Test.Integration
             _light.Received().TurnOff();
         }
 
+        // Display
         [Test]
         public void OnPowerPressed_ShowPower_DisplayReceivedPowerCorrect()
         {
@@ -65,7 +67,7 @@ namespace MicrowaveOven.Test.Integration
         }
 
         [Test]
-        public void OnTimePressed_ShowTime_RaisedEvent_DisplayReceivedTimeCorrect()
+        public void OnTimePressedTwice_ShowTime_DisplayReceivedTimeCorrect()
         {
             _uut.OnPowerPressed(_pButton, EventArgs.Empty);
             _uut.OnTimePressed(_tButton, EventArgs.Empty);
@@ -74,7 +76,7 @@ namespace MicrowaveOven.Test.Integration
         }
 
         [Test]
-        public void OnStartCancelPressed_Clear_DisplayReceivedTimeCorrect()
+        public void OnStartCancelPressed_Clear_DisplayReceivedClear()
         {
             _uut.OnPowerPressed(_pButton, EventArgs.Empty);
             _uut.OnTimePressed(_tButton, EventArgs.Empty);
@@ -82,7 +84,7 @@ namespace MicrowaveOven.Test.Integration
             _display.Received().Clear();
         }
 
-
+        // CookController
         [Test]
         public void OnStartCancelPressed_StartCooking_CookControllerReceived()
         {
