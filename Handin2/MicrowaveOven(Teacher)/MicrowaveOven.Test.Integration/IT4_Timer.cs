@@ -28,8 +28,6 @@ namespace MicrowaveOven.Test.Integration
             _display = Substitute.For<IDisplay>();
             _powerTube = Substitute.For<IPowerTube>();
             _uut = new Timer();
-
-            //_cookController = Substitute.For<ICookController>();
             _cookController = new CookController(_uut, _display, _powerTube);
         }
 
@@ -43,10 +41,6 @@ namespace MicrowaveOven.Test.Integration
             pause.WaitOne(2000);
 
             _display.Received().ShowTime(0, 3);
-
-            // Check call received on CC ?
-            //_cookController.Received().OnTimerTick(_uut, EventArgs.Empty);
-            //_cookController.Received().StartCooking(50, 50);
         }
 
         [Test]

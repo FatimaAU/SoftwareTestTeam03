@@ -31,20 +31,19 @@ namespace MicrowaveOven.Test.Integration
             _cookController = Substitute.For<ICookController>();
             _display = Substitute.For<IDisplay>();
             _light = Substitute.For<ILight>();
-            //_userInterface = Substitute.For<IUserInterface>();
             _userInterface = new UserInterface(_pButton, _tButton, _scButton, _door, _display, _light, _cookController);
             
         }
 
         [Test]
-        public void OpenDoor_UserInterfaceReceivedOnDoorOpened()
+        public void OpenDoor_LightReceivedTurnOn()
         {
             _door.Open();
             _light.Received().TurnOn();
         }
 
         [Test]
-        public void CloseDoor_UserInterfaceReceivedOnDoorClosed()
+        public void CloseDoor_LightReceivedTurnOff()
         {
             _door.Open();
             _door.Close();
@@ -52,14 +51,14 @@ namespace MicrowaveOven.Test.Integration
         }
 
         [Test]
-        public void PressPowerButton_UserInterfaceReceivedOnPowerPressed()
+        public void PressPowerButton_ShowPower_DisplayPowerCorrect()
         {
             _pButton.Press();
             _display.Received().ShowPower(50);
         }
 
         [Test]
-        public void PressTimeButton_UserInterfaceReceivedOnTimePressed()
+        public void PressTimeButton_ShowTime_DisplayTimeCorrect()
         {
             _pButton.Press();
             _tButton.Press();
@@ -67,7 +66,7 @@ namespace MicrowaveOven.Test.Integration
         }
 
         [Test]
-        public void PressStartCancelButton_UserInterfaceReceivedOnTimePressed()
+        public void PressStartCancelButton_LightReceivedTurnOn()
         {
             _pButton.Press();
             _tButton.Press();
