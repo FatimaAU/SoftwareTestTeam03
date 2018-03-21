@@ -59,7 +59,7 @@ namespace MicrowaveOven.Test.Integration
             // Override StartCooking - test not dependant on CC
             _uut.Start(1000);
 
-            pause.WaitOne(1000);
+            pause.WaitOne(1500);
 
             _powerTube.Received().TurnOff();
         }
