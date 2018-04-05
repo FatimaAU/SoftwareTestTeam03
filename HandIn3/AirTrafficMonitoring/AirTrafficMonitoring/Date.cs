@@ -5,8 +5,6 @@ namespace AirTrafficMonitoring
 {
     class Date
     {
-        //private List<string> FormattedFlightList = new List<string>();
-
         public static List<string> FormatDate(List<string> flightData)
         {
             List<string> formattedFlightList = new List<string>();

@@ -3,11 +3,11 @@ using System.Collections.Generic;
 
 namespace AirTrafficMonitoring
 {
-    class FlightTrackingValidation
+    public class FlightTrackingValidation
     {
         public static bool MonitoredFlightData(List<string> data)
         {
-            return Int32.Parse(data[1]) <= 90000
+            return Int32.Parse(data[1]) <= 90000 
                     && Int32.Parse(data[1]) >= 10000
                     && Int32.Parse(data[2]) <= 90000
                     && Int32.Parse(data[2]) >= 10000
