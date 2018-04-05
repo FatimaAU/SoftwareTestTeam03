@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{2B04DA6B-AFE9-4548-AA05-84D806BA0FA4}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MicrowaveOvenClasses</RootNamespace>
     <AssemblyName>MicrowaveOvenClasses</AssemblyName>
@@ -71,7 +71,6 @@
     <Compile Include="Interfaces\IPowerTube.cs" />
     <Compile Include="Interfaces\ITimer.cs" />
     <Compile Include="Interfaces\IUserInterface.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

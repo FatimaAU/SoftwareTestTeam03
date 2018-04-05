@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MicrowaveOvenClasses.Boundary;
+using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
 using NUnit.Framework;
@@ -13,28 +14,42 @@ namespace MicrowaveOven.Test.Integration
     [TestFixture]
     class IT2_PowerTube
     {
-        private PowerTube _uut;
+        private IDisplay _display;
         private IOutput _output;
+        private ITimer _timer;
+        private IPowerTube _uut;
+        private ICookController _cookController;
+        private IUserInterface _userInterface;
+
 
         [SetUp]
         public void Setup()
         {
             _output = Substitute.For<IOutput>();
+            _timer = Substitute.For<ITimer>();
+            _display = Substitute.For<IDisplay>();
             _uut = new PowerTube(_output);
+            _userInterface = Substitute.For<IUserInterface>();
+            _cookController = new CookController(_timer, _display, _uut, _userInterface);
         }
 
         [Test]
-        public void TurnOn_WasOff_CorrectOutput()
+        public void TurnOn_WasNotOff_CorrectOutput()
         {
-            _uut.TurnOn(70);
-            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("70 %")));
+            // Power is called with TurnOn(200/7)
+            // Checks output
+            _cookController.StartCooking(200, 40);
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains((200/7).ToString())));
         }
 
         [Test]
         public void TurnOff_WasOn_CorrectOutput()
         {
-            _uut.TurnOn(70);
-            _uut.TurnOff();
+            // Turn on
+            _cookController.StartCooking(400, 50);
+            // Turn off 
+            _timer.TimeRemaining.Returns(0);
+            _timer.Expired += Raise.EventWith(_timer, EventArgs.Empty);
             _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
         }
     }

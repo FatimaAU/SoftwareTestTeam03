@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using MicrowaveOvenClasses.Boundary;
 using MicrowaveOvenClasses.Controllers;
 using MicrowaveOvenClasses.Interfaces;
 using NSubstitute;
@@ -15,71 +16,108 @@ namespace MicrowaveOven.Test.Integration
     class IT5_CookController
     {
         private CookController _uut;
-        private ITimer _timer;
-        private IDisplay _display;
         private IPowerTube _powerTube;
         private IOutput _output;
         private IUserInterface _userInterface;
+        private IButton _tButton;
+        private IButton _pButton;
+        private IButton _scButton;
+        private IDoor _door;
+        private IDisplay _display;
+        private ITimer _timer;
+        private ILight _light;
 
         [SetUp]
         public void Setup()
         {
             _output = Substitute.For<IOutput>();
-            _display = Substitute.For<IDisplay>();
+            _display = new Display(_output);
+            _powerTube = new PowerTube(_output);
             _timer = Substitute.For<ITimer>();
-            _userInterface = Substitute.For<IUserInterface>();
-            _powerTube = Substitute.For<IPowerTube>();
-            _uut = new CookController(_timer, _display, _powerTube, _userInterface);
+            _tButton = Substitute.For<IButton>();
+            _pButton = Substitute.For<IButton>();
+            _scButton = Substitute.For<IButton>();
+            _door = Substitute.For<IDoor>();
+            _light = Substitute.For<ILight>();
+            _uut = new CookController(_timer, _display, _powerTube);
+            _userInterface = new UserInterface(_pButton, _tButton, _scButton, _door, _display, _light, _uut);
+            _uut.UI = _userInterface;
         }
 
         [Test]
         public void OnTimerTick_ShowTime_DisplayCorrectOutput()
         {
-            _uut.StartCooking(50, 60);
+            // FROM UI THROUGH CC: 50 W, 1 minute, start
+            _userInterface.OnPowerPressed(_pButton, EventArgs.Empty);
+            _userInterface.OnTimePressed(_tButton, EventArgs.Empty);
+            _userInterface.OnStartCancelPressed(_scButton, EventArgs.Empty);
 
-            // This gives correct output, meaning StartCooking is giving off 60 instead of 60*1000
-            _timer.TimeRemaining.Returns(55*1000);
+            _timer.TimeRemaining.Returns(55 * 1000);
             _timer.TimerTick += Raise.EventWith(_timer, EventArgs.Empty);
 
-            _display.Received().ShowTime(0,55);
-          
-        }
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("00:55")));
 
-        [Test]
-        public void StartCooking_TurnOnPowerTube_PowerTubeOn()
-        {
-            _uut.StartCooking(50, 60);
-            _powerTube.Received().TurnOn(50/7);
         }
 
         [Test]
         public void OnTimerExpired_TurnOffPowerTube_PowerTubeOff()
         {
-            _uut.StartCooking(50, 10);
+            // FROM UI THROUGH CC: 50 W, 1 minute, start
+            _userInterface.OnPowerPressed(_pButton, EventArgs.Empty);
+            _userInterface.OnTimePressed(_tButton, EventArgs.Empty);
+            _userInterface.OnStartCancelPressed(_scButton, EventArgs.Empty);
 
             _timer.TimeRemaining.Returns(0);
+
             _timer.Expired += Raise.EventWith(_timer, EventArgs.Empty);
 
-            _powerTube.Received().TurnOff();
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("off")));
+
+            //_uut.StartCooking(50, 10);
+
+            //_timer.TimeRemaining.Returns(0);
+
+            //_powerTube.Received().TurnOff();
+        }
+
+        [Test]
+        public void StartCooking_TurnOnPowerTube_PowerTubeOn()
+        {
+            // FROM UI THROUGH CC: 50 W, 1 minute, start
+            _userInterface.OnPowerPressed(_pButton, EventArgs.Empty);
+            _userInterface.OnTimePressed(_tButton, EventArgs.Empty);
+            _userInterface.OnStartCancelPressed(_scButton, EventArgs.Empty);
+
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains( (50 / 7).ToString() )));
         }
 
         [Test]
         public void CookingStart_TimerStarted_TimerReceivedStart()
         {
-            _uut.StartCooking(50, 50);
-            // Should be 1000*50, but gives off 50
-            _timer.Received().Start(50*1000);
+            // FROM UI THROUGH CC: 50 W, 1 minute, start
+            _userInterface.OnPowerPressed(_pButton, EventArgs.Empty);
+            _userInterface.OnTimePressed(_tButton, EventArgs.Empty);
+            _userInterface.OnStartCancelPressed(_scButton, EventArgs.Empty);
+
+            //_uut.StartCooking(50, 50);
+            _timer.Received().Start(60*1000);
         }
 
         [Test]
         public void CookingStop_TimerStopped_TimerReceivedStop()
         {
-            _uut.StartCooking(50, 50);
-            _uut.Stop();
+            // FROM UI THROUGH CC: 50 W, 1 minute, start
+            _userInterface.OnPowerPressed(_pButton, EventArgs.Empty);
+            _userInterface.OnTimePressed(_tButton, EventArgs.Empty);
+            _userInterface.OnStartCancelPressed(_scButton, EventArgs.Empty);
+            _userInterface.OnDoorOpened(_door, EventArgs.Empty);
+            //_uut.StartCooking(50, 50);
+            //_uut.Stop();
 
             _timer.Received().Stop();
         }
 
+        // IDK ABOUT THIS ONE, CHECK TOMORROW
         [Test]
         public void OnTimerExpired_CookingIsDone_UIReceivedDone()
         {
