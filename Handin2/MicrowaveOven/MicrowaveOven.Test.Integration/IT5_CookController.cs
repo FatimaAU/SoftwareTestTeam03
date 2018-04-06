@@ -40,6 +40,7 @@ namespace MicrowaveOven.Test.Integration
             _door = Substitute.For<IDoor>();
             _light = Substitute.For<ILight>();
             _uut = new CookController(_timer, _display, _powerTube);
+            //_userInterface = Substitute.For<IUserInterface>();
             _userInterface = new UserInterface(_pButton, _tButton, _scButton, _door, _display, _light, _uut);
             _uut.UI = _userInterface;
         }
@@ -111,21 +112,22 @@ namespace MicrowaveOven.Test.Integration
             _userInterface.OnTimePressed(_tButton, EventArgs.Empty);
             _userInterface.OnStartCancelPressed(_scButton, EventArgs.Empty);
             _userInterface.OnDoorOpened(_door, EventArgs.Empty);
-            //_uut.StartCooking(50, 50);
-            //_uut.Stop();
 
             _timer.Received().Stop();
         }
 
-        // IDK ABOUT THIS ONE, CHECK TOMORROW
         [Test]
         public void OnTimerExpired_CookingIsDone_UIReceivedDone()
         {
+            // Must create sub for Userinterface to test received call
+            IUserInterface userInterfaceSub = Substitute.For<IUserInterface>();
+            _uut.UI = userInterfaceSub;
+
             _uut.StartCooking(50, 30);
 
             _timer.Expired += Raise.EventWith(_timer, EventArgs.Empty);
 
-            _userInterface.Received().CookingIsDone();
+            userInterfaceSub.Received().CookingIsDone();
         }
 
     }

@@ -14,25 +14,32 @@ namespace MicrowaveOven.Test.Integration
     [TestFixture]
     class IT7_8_Button_Door
     {
-        private Button _pButton, _tButton, _scButton;
-        private Door _door;
-        private UserInterface _userInterface;
+        private IButton _pButton, _tButton, _scButton;
+        private IDoor _door;
+        private IUserInterface _userInterface;
         private ILight _light;
         private IDisplay _display;
-        private ICookController _cookController;
+        private CookController _cookController;
+        private ITimer _timer;
+        private IPowerTube _powerTube;
+        private IOutput _output;
 
         [SetUp]
         public void Setup()
         {
+            _output = Substitute.For<IOutput>();
+            _timer = new Timer();
+            _powerTube = new PowerTube(_output);
             _door = new Door();
             _pButton = new Button();
             _tButton = new Button();
             _scButton = new Button();
-            _cookController = Substitute.For<ICookController>();
-            _display = Substitute.For<IDisplay>();
-            _light = Substitute.For<ILight>();
+            _cookController = new CookController(_timer, _display, _powerTube);
+            _display = new Display(_output);
+            _light = new Light(_output);
             _userInterface = new UserInterface(_pButton, _tButton, _scButton, _door, _display, _light, _cookController);
-            
+            _cookController.UI = _userInterface;
+
         }
 
         // Door
@@ -40,7 +47,7 @@ namespace MicrowaveOven.Test.Integration
         public void OpenDoor_DoorOpened_LightReceivedTurnOn()
         {
             _door.Open();
-            _light.Received().TurnOn();
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
 
         [Test]
@@ -48,7 +55,8 @@ namespace MicrowaveOven.Test.Integration
         {
             _door.Open();
             _door.Close();
-            _light.Received().TurnOff();
+
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("Light is turned off")));
         }
 
         // PowerButton
@@ -56,7 +64,7 @@ namespace MicrowaveOven.Test.Integration
         public void PressPowerButton_ShowPower_DisplayPowerCorrect()
         {
             _pButton.Press();
-            _display.Received().ShowPower(50);
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("50 W")));
         }
 
         // TimeButton
@@ -65,7 +73,7 @@ namespace MicrowaveOven.Test.Integration
         {
             _pButton.Press();
             _tButton.Press();
-            _display.Received().ShowTime(1,0);
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("01:00")));
         }
         [Test]
         public void PressTimeButtonTwice_ShowTime_DisplayTimeCorrect()
@@ -73,7 +81,7 @@ namespace MicrowaveOven.Test.Integration
             _pButton.Press();
             _tButton.Press();
             _tButton.Press();
-            _display.Received().ShowTime(2, 0);
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("02:00")));
         }
 
         // StartCancelButton
@@ -83,7 +91,7 @@ namespace MicrowaveOven.Test.Integration
             _pButton.Press();
             _tButton.Press();
             _scButton.Press();
-            _light.Received().TurnOn();
+            _output.Received().OutputLine(Arg.Is<string>(str => str.Contains("Light is turned on")));
         }
     }
 }

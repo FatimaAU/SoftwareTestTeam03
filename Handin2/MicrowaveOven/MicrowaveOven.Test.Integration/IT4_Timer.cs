@@ -20,7 +20,6 @@ namespace MicrowaveOven.Test.Integration
         private ICookController _cookController;
         private IDisplay _display;
         private IPowerTube _powerTube;
-        private event EventHandler TimerTick;
 
         [SetUp]
         public void Setup()
