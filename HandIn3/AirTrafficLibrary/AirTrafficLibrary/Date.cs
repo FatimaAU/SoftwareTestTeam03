@@ -1,11 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+
 namespace AirTrafficLibrary
 {
     public class Date
     {
         public static List<string> FormatDate(List<string> flightData)
         {
+        //    if (flightData[4].Length != 15)
+        //        throw 
             List<string> formattedFlightList = new List<string>();
 
             for (int i = 0; i < flightData.Count - 1; i++)
