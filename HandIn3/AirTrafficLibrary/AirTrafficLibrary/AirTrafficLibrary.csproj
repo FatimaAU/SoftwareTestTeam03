@@ -49,7 +49,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Class1.cs" />
     <Compile Include="Date.cs" />
     <Compile Include="FlightTrackingValidation.cs" />
     <Compile Include="ParseFlightInfo.cs" />
