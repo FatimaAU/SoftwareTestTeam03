@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 namespace AirTrafficLibrary
 {
-    class Date
+    public class Date
     {
         public static List<string> FormatDate(List<string> flightData)
         {
